@@ -1,0 +1,23 @@
+li {
+	list-style: none;
+}
+.error {
+	outline: none;
+	border: 2px solid red;
+}
+.er {
+	color: red;
+	font-size: 20px;
+}
+.done {
+	opacity: 0.7;
+}
+.btn {
+	background-color: aqua;
+}
+.App {
+	display: flex;
+}
+.todo {
+	margin-left: 30px;
+}
