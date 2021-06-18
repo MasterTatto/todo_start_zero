@@ -1,23 +1,24 @@
+.App {
+	display: flex;
+	align-items: center;
+}
+.tl {
+	margin-left: 20px;
+}
 li {
 	list-style: none;
 }
 .error {
-	outline: none;
 	border: 2px solid red;
+	outline: none;
 }
 .er {
 	color: red;
-	font-size: 20px;
+	font-size: 18px;
 }
 .done {
 	opacity: 0.7;
 }
 .btn {
 	background-color: aqua;
-}
-.App {
-	display: flex;
-}
-.todo {
-	margin-left: 30px;
 }

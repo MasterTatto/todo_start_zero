@@ -1,73 +1,94 @@
 import React, { useState } from 'react';
-import { ButtonTypeFilter } from './App';
-import InputForm from './InputForm';
-
-//
-export type TasksType = {
-	id: string;
-	title: string;
-	isDone: boolean;
-};
-//
-type TodoListPropsType = {
+import { setConstantValue } from 'typescript';
+import { FilterValuetype, TasksType } from './App';
+type PropsTypeTodo = {
 	title: string;
 	tasks: Array<TasksType>;
-	addFilterButton: (v: ButtonTypeFilter, todoID: string) => void;
-	removeTasks: (id: string, todoID: string) => void;
-	checkedInput: (id: string, bool: boolean, todoID: string) => void;
-	addTask: (title: string, todoID: string) => void;
+	filterButton: (f: FilterValuetype) => void;
+	removeTask: (id: string) => void;
+	addTask: (title: string) => void;
+	changeChecked: (id: string, bool: boolean) => void;
 	filter: string;
-	id: string;
 };
-function TodoList(props: TodoListPropsType) {
-	console.log(props.tasks);
-
-	let liItem = props.tasks.map((t) => {
+const TodoList = (props: PropsTypeTodo) => {
+	const liItem = props.tasks.map((t) => {
 		return (
 			<li key={t.id} className={t.isDone ? 'done' : ''}>
 				<input
 					type='checkbox'
 					checked={t.isDone}
-					onChange={(e) =>
-						props.checkedInput(t.id, e.currentTarget.checked, props.id)
-					}
+					onChange={(e) => props.changeChecked(t.id, e.currentTarget.checked)}
 				/>
 				{t.title}
-				<button onClick={() => props.removeTasks(t.id, props.id)}>X</button>
+				<button onClick={() => props.removeTask(t.id)}>X</button>
 			</li>
 		);
 	});
 	//
-	function addItem(title: string) {
-		return props.addTask(title, props.id);
-	}
+	let [error, setError] = useState(false);
+	//
+	let [value, setValue] = useState('');
+	//
+	const noSpace = value.trim();
 	//
 	return (
-		<div className={'todo'}>
+		<div className={'tl'}>
 			<h2>{props.title}</h2>
-			<InputForm addItem={addItem} />
-
+			<div>
+				<input
+					className={error ? 'error' : ''}
+					type='text'
+					value={value}
+					onChange={(e) => {
+						setValue(e.currentTarget.value);
+						setError(false);
+					}}
+					onKeyPress={(e) => {
+						if (e.key === 'Enter' && noSpace) {
+							props.addTask(noSpace);
+							setValue('');
+						} else {
+							setError(true);
+						}
+					}}
+				/>
+				<button
+					onClick={() => {
+						if (noSpace) {
+							props.addTask(noSpace);
+							setValue('');
+						} else {
+							setError(true);
+						}
+					}}
+				>
+					Add
+				</button>
+			</div>
+			{error ? <div className='er'>Type value</div> : ''}
 			<ul>{liItem}</ul>
-			<button
-				className={props.filter === 'all' ? 'btn' : ''}
-				onClick={() => props.addFilterButton('all', props.id)}
-			>
-				All
-			</button>
-			<button
-				className={props.filter === 'active' ? 'btn' : ''}
-				onClick={() => props.addFilterButton('active', props.id)}
-			>
-				Active
-			</button>
-			<button
-				className={props.filter === 'completed' ? 'btn' : ''}
-				onClick={() => props.addFilterButton('completed', props.id)}
-			>
-				Completed
-			</button>
+			<div>
+				<button
+					className={props.filter === 'all' ? 'btn' : ''}
+					onClick={() => props.filterButton('all')}
+				>
+					All
+				</button>
+				<button
+					className={props.filter === 'active' ? 'btn' : ''}
+					onClick={() => props.filterButton('active')}
+				>
+					Active
+				</button>
+				<button
+					className={props.filter === 'completed' ? 'btn' : ''}
+					onClick={() => props.filterButton('completed')}
+				>
+					Completed
+				</button>
+			</div>
 		</div>
 	);
-}
+};
 
 export default TodoList;
