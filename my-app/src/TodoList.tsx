@@ -1,88 +1,74 @@
-import React, { useState } from 'react';
-import { setConstantValue } from 'typescript';
+import React from 'react';
+import InputForm from './InputForm';
 import { FilterValuetype, TasksType } from './App';
+import EditSpan from './EditSpan';
+
 type PropsTypeTodo = {
 	title: string;
 	tasks: Array<TasksType>;
-	filterButton: (f: FilterValuetype) => void;
-	removeTask: (id: string) => void;
-	addTask: (title: string) => void;
-	changeChecked: (id: string, bool: boolean) => void;
+	filterButton: (f: FilterValuetype, todoID: string) => void;
+	removeTask: (id: string, todoID: string) => void;
+	addTask: (title: string, todoID: string) => void;
+	changeChecked: (id: string, bool: boolean, todoID: string) => void;
 	filter: string;
+	id: string;
+	removeTodo: (todoID: string) => void;
+	changeSpan: (title: string, id: string, todoID: string) => void;
+	editHead: (title: string, id: string) => void;
 };
 const TodoList = (props: PropsTypeTodo) => {
 	const liItem = props.tasks.map((t) => {
+		//
+		function editSpan(title: string) {
+			props.changeSpan(title, t.id, props.id);
+		}
+		//
 		return (
 			<li key={t.id} className={t.isDone ? 'done' : ''}>
 				<input
 					type='checkbox'
 					checked={t.isDone}
-					onChange={(e) => props.changeChecked(t.id, e.currentTarget.checked)}
+					onChange={(e) =>
+						props.changeChecked(t.id, e.currentTarget.checked, props.id)
+					}
 				/>
-				{t.title}
-				<button onClick={() => props.removeTask(t.id)}>X</button>
+				<EditSpan title={t.title} editSpan={editSpan} />
+				<button onClick={() => props.removeTask(t.id, props.id)}>X</button>
 			</li>
 		);
 	});
 	//
-	let [error, setError] = useState(false);
+	function addItem(title: string) {
+		props.addTask(title, props.id);
+	}
 	//
-	let [value, setValue] = useState('');
-	//
-	const noSpace = value.trim();
-	//
+	function editHeadLogo(title: string) {
+		props.editHead(title, props.id);
+	}
 	return (
 		<div className={'tl'}>
-			<h2>{props.title}</h2>
-			<div>
-				<input
-					className={error ? 'error' : ''}
-					type='text'
-					value={value}
-					onChange={(e) => {
-						setValue(e.currentTarget.value);
-						setError(false);
-					}}
-					onKeyPress={(e) => {
-						if (e.key === 'Enter' && noSpace) {
-							props.addTask(noSpace);
-							setValue('');
-						} else {
-							setError(true);
-						}
-					}}
-				/>
-				<button
-					onClick={() => {
-						if (noSpace) {
-							props.addTask(noSpace);
-							setValue('');
-						} else {
-							setError(true);
-						}
-					}}
-				>
-					Add
-				</button>
-			</div>
-			{error ? <div className='er'>Type value</div> : ''}
+			<h2>
+				<EditSpan title={props.title} editSpan={editHeadLogo} />
+				<button onClick={() => props.removeTodo(props.id)}>X</button>
+			</h2>
+			<InputForm addItem={addItem} />
 			<ul>{liItem}</ul>
 			<div>
 				<button
 					className={props.filter === 'all' ? 'btn' : ''}
-					onClick={() => props.filterButton('all')}
+					onClick={() => props.filterButton('all', props.id)}
 				>
 					All
 				</button>
 				<button
 					className={props.filter === 'active' ? 'btn' : ''}
-					onClick={() => props.filterButton('active')}
+					onClick={() => props.filterButton('active', props.id)}
 				>
 					Active
 				</button>
 				<button
 					className={props.filter === 'completed' ? 'btn' : ''}
-					onClick={() => props.filterButton('completed')}
+					onClick={() => props.filterButton('completed', props.id)}
 				>
 					Completed
 				</button>
