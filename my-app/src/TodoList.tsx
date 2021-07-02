@@ -3,6 +3,7 @@ import {FilterType, TasksType} from './App';
 import InputForm from './InputForm';
 import SpanEdit from './SpanEdit';
 import {Button} from "@material-ui/core";
+import Checkbox from '@material-ui/core/Checkbox';
 
 type TodoListPropsType = {
     tasks: Array<TasksType>;
@@ -26,17 +27,18 @@ function TodoList(props: TodoListPropsType) {
 
         return (
             <li key={t.id}>
-                <input
-                    type='checkbox'
+                <Checkbox
+                    name="gilad"
                     checked={t.isDone}
-                    onChange={(e) =>
+                    onChange={(e: any) =>
                         props.checkBox(t.id, e.currentTarget.checked, props.id)
                     }
                 />
                 <SpanEdit title={t.title} editSpan={editSpan}/>
                 <Button
-                    variant='contained'
-                    color='secondary'
+                    size={'small'}
+                    variant="outlined"
+                    color="primary"
                     onClick={() => props.removeTask(t.id, props.id)}
                 >
                     X

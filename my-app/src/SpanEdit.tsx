@@ -17,6 +17,7 @@ function SpanEdit(props: SpanEditPropsType) {
         <span onDoubleClick={() => setEdit(false)}>{props.title}</span>
     ) : (
         <TextField
+            size={'small'}
             id="standard-basic" label="Type value"
             type='text'
             value={value}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Button, TextField} from "@material-ui/core";
 type InputFormPropsType = {
 	addItem: (title: string) => void;
 };
@@ -9,7 +10,9 @@ function InputForm(props: InputFormPropsType) {
 	//
 	return (
 		<div>
-			<input
+			<TextField
+				id="outlined-basic" label="Type..." variant="outlined"
+				size={'small'}
 				className={error ? 'er' : ''}
 				type='text'
 				value={value}
@@ -26,7 +29,11 @@ function InputForm(props: InputFormPropsType) {
 					}
 				}}
 			/>
-			<button
+			<Button
+
+				size={'medium'}
+				variant="outlined"
+				color="primary"
 				onClick={() => {
 					if (outSpace) {
 						props.addItem(value);
@@ -37,7 +44,7 @@ function InputForm(props: InputFormPropsType) {
 				}}
 			>
 				Add
-			</button>
+			</Button>
 			{error ? <div>Error</div> : ''}
 		</div>
 	);
