@@ -1,93 +1,66 @@
-import React from 'react';
-import {FilterType, TasksType} from './App';
-import InputForm from './InputForm';
-import SpanEdit from './SpanEdit';
-import {Button} from "@material-ui/core";
-import Checkbox from '@material-ui/core/Checkbox';
+import React, {useState} from 'react';
+import {FilterValue, TaskType} from "./App";
 
 type TodoListPropsType = {
-    tasks: Array<TasksType>;
-    addButtonFilter: (f: FilterType, todoID: string) => void;
-    removeTask: (id: string, todoID: string) => void;
-    title: string;
-    addTask: (title: string, todoID: string) => void;
-    checkBox: (id: string, bool: boolean, todoID: string) => void;
-    filter: string;
-    id: string;
-    removeTodoList: (id: string) => void;
-    changeSpan: (title: string, todoID: string, id: string) => void;
-    changeTodoTitle: (title: string, id: string) => void;
-};
-
-function TodoList(props: TodoListPropsType) {
+    title: string
+    tasks: Array<TaskType>
+    removeTask: (todoID: string, id: string) => void
+    id: string
+    filterButton: (f: FilterValue, todoID: string) => void
+    addTask: (todoID: string, title: string) => void
+    changeChecked: (todoID: string, id: string, bool: boolean) => void
+}
+const TodoList = (props: TodoListPropsType) => {
     const liItem = props.tasks.map((t) => {
-        function editSpan(title: string) {
-            props.changeSpan(title, props.id, t.id);
-        }
-
-        return (
-            <li key={t.id}>
-                <Checkbox
-                    name="gilad"
-                    checked={t.isDone}
-                    onChange={(e: any) =>
-                        props.checkBox(t.id, e.currentTarget.checked, props.id)
-                    }
-                />
-                <SpanEdit title={t.title} editSpan={editSpan}/>
-                <Button
-                    size={'small'}
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => props.removeTask(t.id, props.id)}
-                >
-                    X
-                </Button>
-            </li>
-        );
-    });
-
+        return <li key={t.id}>
+            <input type="checkbox" checked={t.isDone}
+                   onChange={(e) => props.changeChecked(props.id, t.id, e.currentTarget.checked)}/>
+            {t.title}
+            <button onClick={() => props.removeTask(props.id, t.id)}>X</button>
+        </li>
+    })
     //
-    function addTask(title: string) {
-        props.addTask(title, props.id);
-    }
-
-    //
-    function editTodoSpan(title: string) {
-        props.changeTodoTitle(title, props.id);
-    }
-
+    const [value, setValue] = useState('')
+    const outSpace = value.trim()
     //
     return (
-        <div className={'tl'}>
-            <h1>
-                <SpanEdit title={props.title} editSpan={editTodoSpan}/>
-                <button onClick={() => props.removeTodoList(props.id)}>X</button>
-            </h1>
-            <InputForm addItem={addTask}/>
-            <ul>{liItem}</ul>
+        <div className={'todo'}>
             <div>
-                <button
-                    className={props.filter === 'all' ? 'btn' : ''}
-                    onClick={() => props.addButtonFilter('all', props.id)}
-                >
-                    All
-                </button>
-                <button
-                    className={props.filter === 'completed' ? 'btn' : ''}
-                    onClick={() => props.addButtonFilter('completed', props.id)}
-                >
-                    Completed
-                </button>
-                <button
-                    className={props.filter === 'active' ? 'btn' : ''}
-                    onClick={() => props.addButtonFilter('active', props.id)}
-                >
-                    Active
+                <h1>{props.title}
+                    <button>X</button>
+                </h1>
+            </div>
+            <div>
+                <input type="text" value={value} onChange={(e) => setValue(e.currentTarget.value)} onKeyPress={(e) => {
+                    if (e.key === 'Enter' && outSpace) {
+                        props.addTask(props.id, outSpace)
+                        setValue('')
+                    } else {
+                        return
+                    }
+                }
+                }/>
+                <button onClick={() => {
+                    if(outSpace) {
+                        props.addTask(props.id, outSpace)
+                        setValue('')
+                    } else {
+                        return
+                    }
+
+                }}>Add
                 </button>
             </div>
+            <div>
+                <ul>
+                    {liItem}
+                </ul>
+            </div>
+            <button onClick={() => props.filterButton('all', props.id)}>All</button>
+            <button onClick={() => props.filterButton('active', props.id)}>Active</button>
+            <button onClick={() => props.filterButton('completed', props.id)}>Completed</button>
         </div>
     );
-}
+};
 
 export default TodoList;
