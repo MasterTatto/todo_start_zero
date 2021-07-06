@@ -2,6 +2,9 @@ import React from 'react';
 import {FilterValue, TaskType} from "./App";
 import InputForm from "./InputForm";
 import EditSpan from "./EditSpan";
+import {Button, Checkbox, Grid} from "@material-ui/core";
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 
 type TodoListPropsType = {
     title: string
@@ -24,11 +27,17 @@ const TodoList = (props: TodoListPropsType) => {
             props.editSpanTitle(props.id, t.id, title)
         }
 
+        //
         return <li key={t.id}>
-            <input type="checkbox" checked={t.isDone}
-                   onChange={(e) => props.changeChecked(props.id, t.id, e.currentTarget.checked)}/>
+            <Checkbox checked={t.isDone}
+                      onChange={(e) => props.changeChecked(props.id, t.id, e.currentTarget.checked)}/>
             <EditSpan title={t.title} editSpanTask={editSpanTask}/>
-            <button onClick={() => props.removeTask(props.id, t.id)}>X</button>
+            <Button variant="outlined" color="primary" size={'small'}
+                    onClick={() => props.removeTask(props.id, t.id)}><DeleteForeverOutlinedIcon/></Button>
+            <Grid item xs={8}>
+
+
+            </Grid>
         </li>
     })
 
@@ -39,15 +48,20 @@ const TodoList = (props: TodoListPropsType) => {
     }
 
     //
-function changeTitleTodo(title: string) {
-        props.editSpanTodo(props.id,title)
-}
+    function changeTitleTodo(title: string) {
+        props.editSpanTodo(props.id, title)
+    }
+
     //
     return (
         <div className={'todo'}>
             <div>
-                <h1><EditSpan title={props.title} editSpanTask={changeTitleTodo} />
-                    <button onClick={() => props.removeTodo(props.id)}>X</button>
+                <h1><EditSpan title={props.title} editSpanTask={changeTitleTodo}/>
+                    <Button variant="contained"
+                            color="secondary"
+                        // className={classes.button}
+                            startIcon={<DeleteOutlinedIcon/>}
+                            onClick={() => props.removeTodo(props.id)}/>
                 </h1>
             </div>
             <InputForm addItem={addTask}/>
@@ -56,9 +70,11 @@ function changeTitleTodo(title: string) {
                     {liItem}
                 </ul>
             </div>
-            <button onClick={() => props.filterButton('all', props.id)}>All</button>
-            <button onClick={() => props.filterButton('active', props.id)}>Active</button>
-            <button onClick={() => props.filterButton('completed', props.id)}>Completed</button>
+            <Button variant="contained" onClick={() => props.filterButton('all', props.id)}>All</Button>
+            <Button variant="contained" color="primary"
+                    onClick={() => props.filterButton('active', props.id)}>Active</Button>
+            <Button variant="contained" color="secondary"
+                    onClick={() => props.filterButton('completed', props.id)}>Completed</Button>
         </div>
     );
 };
