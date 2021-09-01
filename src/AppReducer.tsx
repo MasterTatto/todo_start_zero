@@ -5,14 +5,8 @@ import {v1} from 'uuid';
 import {AddItemForm} from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
-import {
-    addTodolistAC,
-    changeTodolistFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC,
-    todolistsReducer
-} from "./state/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./redux/tasksReducer";
+import {AddTodoAC, ChangeFilterTodo, ChangeTitleTodoAC, RemoveTodoAC, todolistsReducer} from "./redux/todoListReducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = {
@@ -26,16 +20,16 @@ export type TasksStateType = {
 }
 
 
-function AppWithReducer() {
+function AppReducer() {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
-    let [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [
+    let [todolists, dispatchTD] = useReducer(todolistsReducer, [
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ])
 
-    let [tasks, dispatchToTasks] = useReducer(tasksReducer, {
+    let [tasks, dispatchT] = useReducer(tasksReducer, {
         [todolistId1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true}
@@ -46,46 +40,41 @@ function AppWithReducer() {
         ]
     });
 
-
     function removeTask(id: string, todolistId: string) {
-        dispatchToTasks(removeTaskAC(id, todolistId));
+        dispatchT(removeTaskAC(id, todolistId))
     }
 
     function addTask(title: string, todolistId: string) {
-        dispatchToTasks(addTaskAC(title, todolistId));
-
-
+        dispatchT(addTaskAC(title, todolistId))
     }
 
     function changeStatus(id: string, isDone: boolean, todolistId: string) {
-        dispatchToTasks(changeTaskStatusAC(id, isDone, todolistId));
+        dispatchT(changeTaskStatusAC(id, isDone, todolistId))
     }
 
     function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
-        dispatchToTasks(changeTaskTitleAC(id, newTitle, todolistId));
+        dispatchT(changeTaskTitleAC(id, newTitle, todolistId))
     }
 
-
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        dispatchToTodolists(changeTodolistFilterAC(todolistId, value))
+
+        dispatchTD(ChangeFilterTodo(todolistId, value))
     }
 
     function removeTodolist(id: string) {
-        let action = addTodolistAC(id)
-        dispatchToTodolists(action);
-        dispatchToTasks(action)
+        const action = RemoveTodoAC(id)
+        dispatchTD(action)
+        dispatchT(action)
     }
 
     function changeTodolistTitle(id: string, title: string) {
-        dispatchToTodolists(changeTodolistTitleAC(id, title));
+        dispatchTD(ChangeTitleTodoAC(id, title))
     }
 
     function addTodolist(title: string) {
-        // нужен один экшн для того , что бы был один вызов id в редьюсоре
-        let action = addTodolistAC(title)
-        dispatchToTodolists(action)
-        dispatchToTasks(action)
-
+        const action = AddTodoAC(title)
+        dispatchTD(action)
+        dispatchT(action)
     }
 
     return (
@@ -144,4 +133,4 @@ function AppWithReducer() {
     );
 }
 
-export default AppWithReducer;
+export default AppReducer;

@@ -6,14 +6,9 @@ import {AddItemForm} from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
-import {
-    addTodolistAC,
-    changeTodolistFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC
-} from "./state/todolists-reducer";
-import {AppRootStateType} from "./state/store";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./redux/tasksReducer";
+import {AddTodoAC, ChangeFilterTodo, ChangeTitleTodoAC, RemoveTodoAC} from "./redux/todoListReducer";
+import {AppRootStateType} from "./redux/redux";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = {
@@ -27,11 +22,11 @@ export type TasksStateType = {
 }
 
 
-function AppWithRedux() {
+function AppRedux() {
     const dispatch = useDispatch()
-    const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-    console.log(todolists)
+    const todolists = useSelector<AppRootStateType,TodolistType[]>((state) => state.todoList)
+    const tasks = useSelector<AppRootStateType,TasksStateType>((state) => state.task)
+
 
     function removeTask(id: string, todolistId: string) {
         dispatch(removeTaskAC(id, todolistId))
@@ -49,21 +44,20 @@ function AppWithRedux() {
         dispatch(changeTaskTitleAC(id, newTitle, todolistId))
     }
 
-
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        dispatch(changeTodolistFilterAC(todolistId, value))
+        dispatch(ChangeFilterTodo(todolistId, value))
     }
 
     function removeTodolist(id: string) {
-        dispatch(removeTodolistAC(id))
+        dispatch(RemoveTodoAC(id))
     }
 
     function changeTodolistTitle(id: string, title: string) {
-        dispatch(changeTodolistTitleAC(id, title))
+        dispatch(ChangeTitleTodoAC(id, title))
     }
 
     function addTodolist(title: string) {
-        dispatch(addTodolistAC(title))
+        dispatch(AddTodoAC(title))
     }
 
     return (
@@ -122,4 +116,4 @@ function AppWithRedux() {
     );
 }
 
-export default AppWithRedux;
+export default AppRedux;
