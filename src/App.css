@@ -1,21 +1,26 @@
-li {
-    list-style: none;
+/*
+.App {
+  padding: 30px;
+  display: flex;
 }
 
-.app {
-    display: flex;
-
+.App > div {
+  margin-right: 50px;
 }
 
-.ul li span {
-    padding: 0 10px;
-    font-size: 25px;
+.error {
+  border: red 1px solid;
 }
 
-.todoList {
-    margin-left: 50px;
+.error-message {
+  color: red;
 }
 
-.btn {
-    background-color: #ff9688
+.active-filter {
+  background-color: aquamarine;
 }
+
+.is-done {
+  opacity: 0.5;
+}
+*/
