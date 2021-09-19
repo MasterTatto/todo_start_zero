@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const instanceTodo = axios.create({
+const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
     headers: {
@@ -15,7 +15,26 @@ export type todoListType = {
     addedDate: string,
     order: number
 }
-
+//
+export type TasksType = {
+    addedDate: string
+    deadline: null | string
+    description: null | string
+    id: string
+    order: number
+    priority: number
+    startDate: null | string
+    status: number
+    title: string
+    todoListId: string
+}
+//
+type getTaskstype = {
+    error: string | null,
+    items: Array<TasksType>,
+    totalCount: number
+}
+//
 type ResponseType<D> = {
     data: D,
     messages: string[],
@@ -25,15 +44,32 @@ type ResponseType<D> = {
 
 export const APItodoLists = {
     getTodo() {
-        return instanceTodo.get<todoListType[]>('todo-lists')
+        return instance.get<todoListType[]>('todo-lists')
     },
     createTodo(title: string) {
-        return instanceTodo.post<ResponseType<{ item: todoListType }>>('todo-lists', {title})
+        return instance.post<ResponseType<{ item: todoListType }>>('todo-lists', {title})
     },
     deleteTodo(id: string) {
-        return instanceTodo.delete<ResponseType<{}>>(`todo-lists/${id}`)
+        return instance.delete<ResponseType<{}>>(`todo-lists/${id}`)
     },
     updateTodo(id: string, title: string) {
-        return instanceTodo.put<ResponseType<{}>>(`todo-lists/${id}`, {title})
+        return instance.put<ResponseType<{}>>(`todo-lists/${id}`, {title})
+    }
+}
+///////////////////////////
+
+
+export const APItasks = {
+    getTasks(id: string) {
+        return instance.get<getTaskstype>(`todo-lists/${id}/tasks`)
+    },
+    createTasks(id: string, title: string) {
+        return instance.post<ResponseType<{ item: TasksType }>>(`todo-lists/${id}/tasks`, {title})
+    },
+    deleteTasks(taskID: string, todoID: string) {
+        return instance.delete<ResponseType<{}>>(`todo-lists/${todoID}/tasks/${taskID}`)
+    },
+    updateTask(taskID: string, todoID: string, title: string) {
+        return instance.put<ResponseType<{ item: TasksType & { todoList: null | string } }>>(`todo-lists/${todoID}/tasks/${taskID}`, {title})
     }
 }

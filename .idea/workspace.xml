@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0d4979f5-02e9-46c6-8ffe-8ca01bf5d725" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/API/APItodoLists.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/stories/todolists-api.stories.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="0d4979f5-02e9-46c6-8ffe-8ca01bf5d725" name="Default Changelist" comment="add rest api for todoLists and tasks,but need make DAL for tasks">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bit/todoLists.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/molecul/editSpan.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/molecul/inputForm.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/store.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/taskReducer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/todoListsReducer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/reportWebVitals.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setupTests.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/APItodoLists.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/APItodoLists.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stories/todolists-api.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/todolists-api.stories.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +13,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1yJXAK5B3UuoImNaXNixFOFJtEQ" />
   <component name="ProjectViewState">
@@ -55,8 +48,18 @@
       <option name="presentableId" value="Default" />
       <updated>1631970523819</updated>
       <workItem from="1631970526918" duration="179000" />
-      <workItem from="1631970850811" duration="9660000" />
+      <workItem from="1631970850811" duration="9778000" />
+      <workItem from="1632051603480" duration="1883000" />
+      <workItem from="1632053512272" duration="7445000" />
     </task>
+    <task id="LOCAL-00001" summary="add rest api for todoLists and tasks,but need make DAL for tasks">
+      <created>1631983494282</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1631983494282</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -72,5 +75,10 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add rest api for todoLists and tasks,but need make DAL for tasks" />
+    <option name="LAST_COMMIT_MESSAGE" value="add rest api for todoLists and tasks,but need make DAL for tasks" />
   </component>
 </project>

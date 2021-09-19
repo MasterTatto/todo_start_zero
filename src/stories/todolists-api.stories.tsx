@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {APItodoLists} from "../api/APItodoLists";
-import axios from "axios";
+import {APItasks, APItodoLists} from "../api/APItodoLists";
 
 export default {
     title: 'API'
@@ -8,125 +7,168 @@ export default {
 
 export const GetTodolists = () => {
     const [state, setState] = useState<any>(null)
+
     useEffect(() => {
         APItodoLists.getTodo()
             .then((response) => {
                 return response.data
             })
             .then(data => setState(data))
-
     }, [])
 
-    return <div> {JSON.stringify(state)}</div>
+
+    return <div> {JSON.stringify(state)}
+
+    </div>
 }
+//
 export const CreateTodolist = () => {
     const [state, setState] = useState<any>(null)
-    useEffect(() => {
-        const title = "WowWow"
+    const [value, setValue] = useState('')
 
+    function createTodoList(title: string) {
         APItodoLists.createTodo(title)
             .then((response) => {
                 setState(response.data)
                 console.log(response)
             })
-    }, [])
+    }
 
-    return <div> {JSON.stringify(state)}</div>
+    return <div> {JSON.stringify(state)}
+        <input type="text" value={value} placeholder={'type title for todo'}
+               onChange={(e) => setValue(e.currentTarget.value)}/>
+        <button onClick={() => createTodoList(value)}>Create</button>
+    </div>
 }
+//
 export const DeleteTodolist = () => {
     const [state, setState] = useState<any>(null)
-    useEffect(() => {
-        const id = "cb76201f-bb05-4384-81ea-d2dafbe5d0f1"
+    const [value, setValue] = useState('')
+
+    function deleteTodoList(id: string) {
         APItodoLists.deleteTodo(id)
             .then((response) => {
                 setState(response.data)
                 console.log(response)
             })
-    }, [])
+    }
 
-    return <div> {JSON.stringify(state)}</div>
+    return <div>
+        {JSON.stringify(state)}
+        <input type="text" value={value} placeholder={'type id todo list'}
+               onChange={(e) => setValue(e.currentTarget.value)}/>
+        <button onClick={() => deleteTodoList(value)}>delete todo</button>
+    </div>
 }
+//
 export const UpdateTodolistTitle = () => {
     const [state, setState] = useState<any>(null)
-    useEffect(() => {
-        const id = "8e919cac-31d3-4695-a7e2-e650119165a9"
-        const title = 'Wow its a react'
+    const [id, setId] = useState('')
+    const [title, setTitle] = useState('')
+
+    function updateTodo(id: string, title: string) {
         APItodoLists.updateTodo(id, title)
             .then((response) => {
                 setState(response.data)
                 console.log(response)
             })
-    }, [])
+    }
 
-    return <div> {JSON.stringify(state)}</div>
+    return <div> {JSON.stringify(state)}
+        <input type="text" placeholder={'todo id'} value={id} onChange={(e) => setId(e.currentTarget.value)}/>
+        <input type="text" placeholder={'new todo title'} value={title}
+               onChange={(e) => setTitle(e.currentTarget.value)}/>
+        <button onClick={() => updateTodo(id, title)}>Change title todo</button>
+    </div>
 }
 
 
-export const getTasksme = () => {
+export const getTasks = () => {
+
     const [state, setState] = useState<any>(null)
-    useEffect(() => {
-        axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists/8e919cac-31d3-4695-a7e2-e650119165a9/tasks', {
-            withCredentials: true,
-            headers: {
-                'API-KEY': 'f5568293-5f8e-4b65-9db2-3f550b4e7fcf'
-            }
-        }).then((response) => {
-            setState(response.data.items)
-        })
-    }, [])
+    const [todoID, setTodoID] = useState('8e919cac-31d3-4695-a7e2-e650119165a9')
 
-    return <div> {JSON.stringify(state)}</div>
+    function showTasks(todoID: string) {
+        APItasks.getTasks(todoID)
+            .then((response) => {
+                setState(response.data.items)
+            })
+    }
+
+    return <div> {JSON.stringify(state)}
+        <input type="text" placeholder={'type todoID'} value={todoID}
+               onChange={(e) => setTodoID(e.currentTarget.value)}/>
+        <button onClick={() => showTasks(todoID)}>show todo tasks</button>
+    </div>
 }
+//
 export const CreateTasks = () => {
     const [state, setState] = useState<any>(null)
-    useEffect(() => {
-        const title = 'add new task'
-        axios.post('https://social-network.samuraijs.com/api/1.1/todo-lists/8e919cac-31d3-4695-a7e2-e650119165a9/tasks', {title}, {
-            withCredentials: true,
-            headers: {
-                'API-KEY': 'f5568293-5f8e-4b65-9db2-3f550b4e7fcf'
-            }
-        })
+    const [todoID, setTodoID] = useState('8e919cac-31d3-4695-a7e2-e650119165a9')
+    const [title, setTitle] = useState('')
+
+    function createTasks(todoID: string, title: string) {
+        APItasks.createTasks(todoID, title)
             .then((response) => {
                     setState(response.data)
                 }
             )
-    }, [])
+    }
 
-    return <div> {JSON.stringify(state)}</div>
+    return <div> {JSON.stringify(state)}
+        <input type="text" placeholder={'type new title'} value={title}
+               onChange={(e) => setTitle(e.currentTarget.value)}/>
+        <input type="text" placeholder={'type id todo'} value={todoID}
+               onChange={(e) => setTodoID(e.currentTarget.value)}/>
+        <button onClick={() => createTasks(todoID, title)}>Create task title</button>
+
+    </div>
 }
+//
 export const DeleteTasks = () => {
     const [state, setState] = useState<any>(null)
-    useEffect(() => {
-        axios.delete('https://social-network.samuraijs.com/api/1.1/todo-lists/8e919cac-31d3-4695-a7e2-e650119165a9/tasks/45758f9f-05f3-4464-b1d2-bbd8c326dfcd', {
-            withCredentials: true,
-            headers: {
-                'API-KEY': 'f5568293-5f8e-4b65-9db2-3f550b4e7fcf'
-            }
-        })
+    const [todoID, setTodoID] = useState('8e919cac-31d3-4695-a7e2-e650119165a9')
+    const [taskID, setTasksID] = useState('')
+
+    function deleteTasks(todoID: string, taskID: string) {
+        APItasks.deleteTasks(taskID, todoID)
             .then((response) => {
                 setState(response.data)
             })
-    }, [])
+    }
 
-    return <div> {JSON.stringify(state)}</div>
+    return <div> {JSON.stringify(state)}
+        <input type="text" placeholder={'type task id'} value={taskID}
+               onChange={(e) => setTasksID(e.currentTarget.value)}/>
+        <input type="text" placeholder={'type id todo'} value={todoID}
+               onChange={(e) => setTodoID(e.currentTarget.value)}/>
+        <button onClick={() => deleteTasks(todoID, taskID)}>delete task in todo</button>
+    </div>
 }
+//
 export const UpdateTasks = () => {
     const [state, setState] = useState<any>(null)
-    useEffect(() => {
-        const title = ' im change title'
-        axios.put('https://social-network.samuraijs.com/api/1.1/todo-lists/8e919cac-31d3-4695-a7e2-e650119165a9/tasks/c7e7b34d-78d7-4147-8616-06c49ed66d3b', {title}, {
-            withCredentials: true,
-            headers: {
-                'API-KEY': 'f5568293-5f8e-4b65-9db2-3f550b4e7fcf'
-            }
-        })
+    const [todoID, setTodoID] = useState('8e919cac-31d3-4695-a7e2-e650119165a9')
+    const [taskID, setTasksID] = useState('')
+    const [title, setTitle] = useState('')
+
+    function updateTasks(todoID: string, taskID: string, title: string) {
+        APItasks.updateTask(taskID, todoID, title)
             .then((response) => {
                 setState(response.data)
             })
-    }, [])
+    }
 
-    return <div> {JSON.stringify(state)}</div>
+
+    return <div> {JSON.stringify(state)}
+        <input type="text" placeholder={'type task id'} value={taskID}
+               onChange={(e) => setTasksID(e.currentTarget.value)}/>
+        <input type="text" placeholder={'type id todo'} value={todoID}
+               onChange={(e) => setTodoID(e.currentTarget.value)}/>
+        <input type="text" placeholder={'type new title'} value={title}
+               onChange={(e) => setTitle(e.currentTarget.value)}/>
+        <button onClick={() => updateTasks(todoID, taskID, title)}>change title task</button>
+    </div>
 }
 
 
