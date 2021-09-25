@@ -195,3 +195,28 @@ export const updateTaskStatusTC = (todoID: string, taskID: string, status: TaskS
         }
 
     }
+
+export const updateTaskTitleTC = (todoID: string, taskID: string, title: string) =>
+    (dispatch: Dispatch, getState: () => AppRootStateType) => {
+        const stateApp = getState()
+
+        const allTask = stateApp.tasks
+        const tasksForClick = allTask[todoID]
+
+        let currentclickTask = tasksForClick.find((tl) => {
+            return tl.id === taskID ? {...tl, title: title} : tl
+        })
+
+        if (currentclickTask) {
+
+            let model = {...currentclickTask, title: title}
+            todolistsAPI.updateTask(todoID, taskID, model)
+
+                .then((res) => {
+                    debugger
+                    dispatch(changeTaskTitleAC(taskID, title, todoID));
+
+                })
+        }
+
+    }
